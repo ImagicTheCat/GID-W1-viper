@@ -8,6 +8,7 @@ function Viper:__construct(world, x, y, speed)
   self.stomach = 0 -- future body units
   self.move_delay = 1/speed
   self.time = 0
+  self.dead = false
 
   self.body = {world:getCell(x,y)} -- body cells; head -> tail
 end
@@ -38,15 +39,21 @@ function Viper:move()
   local cell = self.body[1]
   local nx, ny = (cell.x+dx)%grid_size, (cell.y+dy)%grid_size
   local ncell = self.world:getCell(nx,ny)
-  ncell.body = true
-  self.body[1] = ncell
+  if ncell.body then
+    self.dead = true
+  else
+    ncell.body = true
+    self.body[1] = ncell
+  end
 end
 
 function Viper:update(dt)
-  self.time = self.time+dt
-  if self.time >= self.move_delay then
-    self.time = 0
-    self:move()
+  if not self.dead then
+    self.time = self.time+dt
+    if self.time >= self.move_delay then
+      self.time = 0
+      self:move()
+    end
   end
 end
 

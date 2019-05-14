@@ -5,13 +5,20 @@ utils = require("utils")
 
 local World = require("World")
 local Viper = require("Viper")
+local Food = require("Food")
 
-local grid_size = 32 -- cells
+local grid_size = 40 -- cells
 local world, viper
+local food = 7
 
 function love.load()
   world = World(grid_size)
-  viper = Viper(world,0,0,5)
+  viper = Viper(world,0,0,15)
+
+  -- init food
+  for i=1,food do
+    Food.randomSpawn(world)
+  end
 end
 
 function love.update(dt)

@@ -5,7 +5,7 @@ function Viper:__construct(world, x, y, speed)
   self.world = world
   self.size = size
   self.direction = 0 -- 0-3 start right and counter clockwise
-  self.stomach = 0 -- future body units
+  self.stomach = 3 -- future body units
   self.move_delay = 1/speed
   self.time = 0
   self.dead = false
@@ -39,11 +39,16 @@ function Viper:move()
   local cell = self.body[1]
   local nx, ny = (cell.x+dx)%grid_size, (cell.y+dy)%grid_size
   local ncell = self.world:getCell(nx,ny)
-  if ncell.body then
+
+  if ncell.body then -- death
     self.dead = true
-  else
+  else -- move on cell
     ncell.body = true
     self.body[1] = ncell
+
+    if ncell.entity then -- entity hit event
+      ncell.entity:onHit(self)
+    end
   end
 end
 

@@ -23,7 +23,7 @@ function World:getCell(x, y)
 end
 
 function World:draw()
-  love.graphics.setColor(0.5,0.5,0.5)
+  love.graphics.setColor(0.25,0.25,0.25)
   love.graphics.setLineWidth(1)
 
   -- draw grid

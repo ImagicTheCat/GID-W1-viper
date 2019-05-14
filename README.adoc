@@ -1,0 +1,13 @@
+= Viper
+
+.https://github.com/guild-of-illustrious-developers[GID] workshop
+----
+iteration: #1
+type: game
+genre: snake-like
+duration: 1 week(s)
+----
+
+.Ideas
+* square cells
+* portals

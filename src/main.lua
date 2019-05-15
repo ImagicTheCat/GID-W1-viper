@@ -16,12 +16,16 @@ local portals = 3
 local font
 local stats = false -- stats display
 local lost = false
+local logo
 
-function love.load()
-  world = World(grid_size)
-  viper = Viper(world,0,0,15)
+function love.load(args)
   font = love.graphics.newFont("resources/Pixellari.ttf", 20)
   love.graphics.setFont(font)
+  logo = love.graphics.newImage("resources/textures/logo.png")
+
+  world = World(grid_size)
+  viper = Viper(world,0,0,15)
+
 
   -- init food
   for i=1,food do
@@ -62,6 +66,12 @@ function love.draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.print(text, 2,2)
+
+    if lost then
+      local width, height = logo:getDimensions()
+      local wwidth, wheight = love.graphics.getDimensions()
+      love.graphics.draw(logo, wwidth/2-width/2, wheight/2-height/2)
+    end
   end
 end
 

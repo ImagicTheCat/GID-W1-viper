@@ -47,7 +47,7 @@ function love.load(args)
   initialize()
   running = false
   play_text = love.graphics.newText(big_font)
-  play_text:setf("Press ENTER to play.\nH to toggle UI.", 800, "center")
+  play_text:setf("Press SPACE to play.\nWASD to move, H to toggle HUD.", 800, "center")
 end
 
 function love.update(dt)
@@ -98,8 +98,10 @@ function love.keypressed(key, scancode, isrepeat)
 
     if scancode == "h" then
       stats = not stats
-    elseif scancode == "return" then
-      initialize()
+    elseif scancode == "space" then
+      if not running then
+        initialize()
+      end
     end
   end
 end

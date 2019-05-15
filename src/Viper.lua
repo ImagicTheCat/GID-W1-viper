@@ -9,6 +9,7 @@ function Viper:__construct(world, x, y, speed)
   self.move_delay = 1/speed
   self.time = 0
   self.dead = false
+  self.traveled = 0
 
   self.body = {world:getCell(x,y)} -- body cells; head -> tail
 end
@@ -43,6 +44,8 @@ function Viper:move()
   if ncell.body then -- death
     self.dead = true
   else -- move on cell
+    self.traveled = self.traveled+1
+
     ncell.body = true
     self.body[1] = ncell
 

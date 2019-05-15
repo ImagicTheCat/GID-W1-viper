@@ -10,10 +10,13 @@ local Food = require("Food")
 local grid_size = 40 -- cells
 local world, viper
 local food = 7
+local font
 
 function love.load()
   world = World(grid_size)
   viper = Viper(world,0,0,15)
+  font = love.graphics.newFont("resources/Pixellari.ttf", 20)
+  love.graphics.setFont(font)
 
   -- init food
   for i=1,food do
@@ -28,6 +31,17 @@ end
 
 function love.draw()
   world:draw()
+
+  -- stats
+  local length = #viper.body
+  local text = "length = "..length.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
+
+  love.graphics.setColor(0,0,0)
+  -- shadow
+  love.graphics.print(text, 2, 2)
+
+  love.graphics.setColor(1,1,1)
+  love.graphics.print(text, 0,0)
 end
 
 function love.keypressed(key, scancode, isrepeat)

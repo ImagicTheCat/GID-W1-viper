@@ -11,9 +11,11 @@ local Portal = require("Portal")
 
 local grid_size = 40 -- cells
 local world, viper
-local food = 7
+local food = 10
 local portals = 3
 local font
+local stats = false -- stats display
+local lost = false
 
 function love.load()
   world = World(grid_size)
@@ -39,21 +41,28 @@ end
 function love.update(dt)
   world:update(dt)
   viper:update(dt)
+
+  if viper.dead and not lost then
+    lost = true
+    stats = true
+  end
 end
 
 function love.draw()
   world:draw()
 
-  -- stats
-  local length = #viper.body
-  local text = "grid size = "..grid_size.." | speed = "..utils.round(1/viper.move_delay).."\nlength = "..length.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
+  if stats then
+    -- stats
+    local length = #viper.body
+    local text = "grid size = "..grid_size.." | speed = "..utils.round(1/viper.move_delay).." | food = "..food.." | portals = "..portals.."\nlength = "..length.." | traveled = "..viper.traveled.." | portals taken = "..viper.portals_taken.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
 
-  love.graphics.setColor(0,0,0)
-  -- shadow
-  love.graphics.print(text, 2, 2)
+    love.graphics.setColor(0,0,0)
+    -- shadow
+    love.graphics.print(text, 4, 4)
 
-  love.graphics.setColor(1,1,1)
-  love.graphics.print(text, 0,0)
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(text, 2,2)
+  end
 end
 
 function love.keypressed(key, scancode, isrepeat)
@@ -62,5 +71,9 @@ function love.keypressed(key, scancode, isrepeat)
     elseif scancode == "w" then viper:setDirection(1)
     elseif scancode == "a" then viper:setDirection(2)
     elseif scancode == "s" then viper:setDirection(3) end
+
+    if scancode == "h" then
+      stats = not stats
+    end
   end
 end

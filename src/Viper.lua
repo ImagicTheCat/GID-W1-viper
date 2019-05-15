@@ -10,6 +10,7 @@ function Viper:__construct(world, x, y, speed)
   self.time = 0
   self.dead = false
   self.traveled = 0
+  self.portals_taken = 0
 
   self.body = {world:getCell(x,y)} -- body cells; head -> tail
 end

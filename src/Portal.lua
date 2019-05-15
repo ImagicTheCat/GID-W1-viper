@@ -37,6 +37,7 @@ end
 
 function Portal:onExit(viper)
   if self.portal then
+    viper.portals_taken = viper.portals_taken+1
     self.portal.cell:removeEntity()
     self.cell:removeEntity()
 

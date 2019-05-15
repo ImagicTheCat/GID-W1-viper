@@ -9,27 +9,32 @@ local Entity = require("Entity")
 local Food = require("Food")
 local Portal = require("Portal")
 
-local grid_size = 40 -- cells
+-- all of them can be changed using command parameters as "--option=value"
+local options = {
+  grid_size = 40, -- cells
+  food = 10,
+  portals = 3,
+  speed = 15
+}
+
 local world, viper
-local food = 10
-local portals = 3
 local font, big_font
 local stats = true -- stats display
 local running = false
 local logo, play_text
 
 function initialize()
-  world = World(grid_size)
-  viper = Viper(world,0,0,15)
+  world = World(options.grid_size)
+  viper = Viper(world,0,0,options.speed)
 
   -- init food
-  for i=1,food do
+  for i=1,options.food do
     Entity.randomSpawn(world, Food(math.random(1,3)))
   end
 
   -- init portals
-  for i=1,portals do
-    local hue = (i/portals+0.22)%1
+  for i=1,options.portals do
+    local hue = (i/options.portals+0.22)%1
     local nportal = Portal(hue)
     local eportal = Portal(hue, nportal)
     Entity.randomSpawn(world, nportal)
@@ -39,7 +44,21 @@ function initialize()
   running = true
 end
 
+-- return key, number from option formatted as "--foo=x"
+function parseOption(arg)
+  local k, v = string.match(arg, "--([%a_]+)=(.+)")
+  return k, tonumber(v)
+end
+
 function love.load(args)
+  -- load options
+  for _,arg in pairs(args) do
+    local key, value = parseOption(arg)
+    if key and options[key] then
+      options[key] = value
+    end
+  end
+
   font = love.graphics.newFont("resources/Pixellari.ttf", 20)
   big_font = love.graphics.newFont("resources/Pixellari.ttf", 30)
   love.graphics.setFont(font)
@@ -68,7 +87,7 @@ function love.draw()
   if stats then
     -- stats
     local length = #viper.body
-    local text = "grid size = "..grid_size.." | speed = "..utils.round(1/viper.move_delay).." | food = "..food.." | portals = "..portals.."\nlength = "..length.." | traveled = "..viper.traveled.." | portals taken = "..viper.portals_taken.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
+    local text = "grid size = "..options.grid_size.." | speed = "..utils.round(1/viper.move_delay).." | food = "..options.food.." | portals = "..options.portals.."\nlength = "..length.." | traveled = "..viper.traveled.." | portals taken = "..viper.portals_taken.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
 
     love.graphics.setColor(0,0,0)
     -- shadow

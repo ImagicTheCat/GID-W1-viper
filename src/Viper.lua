@@ -55,6 +55,19 @@ function Viper:move()
   end
 end
 
+function Viper:setDirection(direction)
+  -- check direction
+  local grid_size = self.world.grid_size
+  local a = math.pi/2*direction
+  local dx, dy = utils.round(math.cos(a)), -utils.round(math.sin(a))
+  local hcell = self.body[1]
+  local nx, ny = (hcell.x+dx)%grid_size, (hcell.y+dy)%grid_size
+  local ncell = self.world:getCell(nx, ny)
+  if not ncell.body then
+    self.direction = direction
+  end
+end
+
 function Viper:update(dt)
   if not self.dead then
     self.time = self.time+dt

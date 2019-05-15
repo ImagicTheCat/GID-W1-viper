@@ -46,9 +46,9 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   if not isrepeat then
-    if scancode == "d" then viper.direction = 0
-    elseif scancode == "w" then viper.direction = 1
-    elseif scancode == "a" then viper.direction = 2
-    elseif scancode == "s" then viper.direction = 3 end
+    if scancode == "d" then viper:setDirection(0)
+    elseif scancode == "w" then viper:setDirection(1)
+    elseif scancode == "a" then viper:setDirection(2)
+    elseif scancode == "s" then viper:setDirection(3) end
   end
 end

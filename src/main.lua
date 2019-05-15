@@ -34,7 +34,7 @@ function love.draw()
 
   -- stats
   local length = #viper.body
-  local text = "length = "..length.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
+  local text = "grid size = "..grid_size.." | speed = "..utils.round(1/viper.move_delay).."\nlength = "..length.."\nlength/traveled ratio = "..utils.round(length/viper.traveled*100, 3).."%"
 
   love.graphics.setColor(0,0,0)
   -- shadow

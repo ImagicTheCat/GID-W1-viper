@@ -11,3 +11,5 @@ duration: 1 week(s)
 .Ideas
 * square cells
 * portals
+
+NOTE: Game made for LÖVE 11.2.

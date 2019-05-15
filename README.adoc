@@ -12,4 +12,16 @@ duration: 1 week(s)
 * square cells
 * portals
 
-NOTE: Game made for LÖVE 11.2.
+.Dependencies
+* https://github.com/ImagicTheCat/Luaoop[Luaoop]
+* https://love2d.org[LÖVE 11.2]
+
+== Command-line options
+
+Viper playground can be customized using command-line options as `--option=value`.
+
+.Options
+grid_size:: playground grid size (default: 40)
+food:: food entities (default: 10)
+portals:: two-way portals (default: 3)
+speed:: viper speed, cells per seconds (default: 15)

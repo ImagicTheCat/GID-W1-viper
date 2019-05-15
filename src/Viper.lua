@@ -28,7 +28,11 @@ function Viper:move()
     table.insert(self.body, self.body[size])
     size = size+1
   else
-    self.body[size].body = false -- remove tail
+    local lcell = self.body[size]
+    lcell.body = false -- remove tail
+    if lcell.entity then
+      lcell.entity:onExit(self)
+    end
   end
 
   -- move body
@@ -50,8 +54,16 @@ function Viper:move()
     self.body[1] = ncell
 
     if ncell.entity then -- entity hit event
-      ncell.entity:onHit(self)
+      ncell.entity:onEnter(self)
     end
+  end
+end
+
+function Viper:teleport(x, y)
+  local cell = self.world:getCell(x,y)
+  if cell and not cell.body then
+    self.body[1].body = false
+    self.body[1] = cell
   end
 end
 

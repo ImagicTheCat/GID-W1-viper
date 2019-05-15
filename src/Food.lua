@@ -2,23 +2,6 @@ local Entity = require("Entity")
 
 local Food = class("Food", Entity)
 
--- STATIC
-
-function Food.randomSpawn(world)
-  -- food respawn
-  local ok
-  repeat
-    local x = math.random(0,world.grid_size-1)
-    local y = math.random(0,world.grid_size-1)
-
-    cell = world:getCell(x,y)
-    if not cell.body and not cell.entity then
-      cell:setEntity(Food(math.random(1,3)))
-      ok = true
-    end
-  until ok
-end
-
 -- METHODS
 
 function Food:__construct(amount)
@@ -35,9 +18,9 @@ function Food:draw()
   end
 end
 
-function Food:onHit(viper)
+function Food:onEnter(viper)
   viper.stomach = viper.stomach+self.amount
-  Food.randomSpawn(viper.world)
+  Entity.randomSpawn(viper.world, Food(math.random(1,3)))
 
   -- remove food
   self.cell:removeEntity()

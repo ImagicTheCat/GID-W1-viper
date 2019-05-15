@@ -5,7 +5,9 @@ utils = require("utils")
 
 local World = require("World")
 local Viper = require("Viper")
+local Entity = require("Entity")
 local Food = require("Food")
+local Portal = require("Portal")
 
 local grid_size = 40 -- cells
 local world, viper
@@ -20,8 +22,14 @@ function love.load()
 
   -- init food
   for i=1,food do
-    Food.randomSpawn(world)
+    Entity.randomSpawn(world, Food(math.random(1,3)))
   end
+
+  -- init portals
+  local nportal = Portal()
+  local eportal = Portal(nportal)
+  Entity.randomSpawn(world, nportal)
+  Entity.randomSpawn(world, eportal)
 end
 
 function love.update(dt)

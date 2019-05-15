@@ -13,19 +13,14 @@ local grid_size = 40 -- cells
 local world, viper
 local food = 10
 local portals = 3
-local font
-local stats = false -- stats display
-local lost = false
-local logo
+local font, big_font
+local stats = true -- stats display
+local running = false
+local logo, play_text
 
-function love.load(args)
-  font = love.graphics.newFont("resources/Pixellari.ttf", 20)
-  love.graphics.setFont(font)
-  logo = love.graphics.newImage("resources/textures/logo.png")
-
+function initialize()
   world = World(grid_size)
   viper = Viper(world,0,0,15)
-
 
   -- init food
   for i=1,food do
@@ -40,15 +35,30 @@ function love.load(args)
     Entity.randomSpawn(world, nportal)
     Entity.randomSpawn(world, eportal)
   end
+
+  running = true
+end
+
+function love.load(args)
+  font = love.graphics.newFont("resources/Pixellari.ttf", 20)
+  big_font = love.graphics.newFont("resources/Pixellari.ttf", 30)
+  love.graphics.setFont(font)
+  logo = love.graphics.newImage("resources/textures/logo.png")
+  initialize()
+  running = false
+  play_text = love.graphics.newText(big_font)
+  play_text:setf("Press ENTER to play.\nH to toggle UI.", 800, "center")
 end
 
 function love.update(dt)
-  world:update(dt)
-  viper:update(dt)
+  if running then
+    world:update(dt)
+    viper:update(dt)
 
-  if viper.dead and not lost then
-    lost = true
-    stats = true
+    if viper.dead then
+      running = false
+      stats = true
+    end
   end
 end
 
@@ -67,10 +77,14 @@ function love.draw()
     love.graphics.setColor(1,1,1)
     love.graphics.print(text, 2,2)
 
-    if lost then
+    if not running then
       local width, height = logo:getDimensions()
       local wwidth, wheight = love.graphics.getDimensions()
       love.graphics.draw(logo, wwidth/2-width/2, wheight/2-height/2)
+      love.graphics.setColor(0,0,0)
+      love.graphics.draw(play_text, wwidth/2-400+4, wheight/2+height/2+4)
+      love.graphics.setColor(1,1,1)
+      love.graphics.draw(play_text, wwidth/2-400, wheight/2+height/2)
     end
   end
 end
@@ -84,6 +98,8 @@ function love.keypressed(key, scancode, isrepeat)
 
     if scancode == "h" then
       stats = not stats
+    elseif scancode == "return" then
+      initialize()
     end
   end
 end

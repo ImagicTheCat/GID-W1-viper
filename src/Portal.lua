@@ -4,19 +4,22 @@ local Portal = class("Portal", Entity)
 
 -- METHODS
 
-function Portal:__construct(portal)
+function Portal:__construct(color_hue, portal)
   -- connect portal
   self.portal = portal
   if self.portal then
     self.portal.portal = self
   end
 
+  self.hue = color_hue
+  self.color = {utils.HSLtoRGB(color_hue,1,0.5)}
+
   self.active = true
 end
 
 function Portal:draw()
   if self.cell then
-    love.graphics.setColor(0,1,1)
+    love.graphics.setColor(unpack(self.color))
 
     local cell_size = self.cell.world.cell_size
     local size = cell_size*1.1
@@ -38,8 +41,8 @@ function Portal:onExit(viper)
     self.cell:removeEntity()
 
     -- respawn
-    local nportal = Portal()
-    local eportal = Portal(nportal)
+    local nportal = Portal(self.hue)
+    local eportal = Portal(self.hue, nportal)
     Entity.randomSpawn(viper.world, nportal)
     Entity.randomSpawn(viper.world, eportal)
   end

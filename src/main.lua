@@ -12,6 +12,7 @@ local Portal = require("Portal")
 local grid_size = 40 -- cells
 local world, viper
 local food = 7
+local portals = 3
 local font
 
 function love.load()
@@ -26,10 +27,13 @@ function love.load()
   end
 
   -- init portals
-  local nportal = Portal()
-  local eportal = Portal(nportal)
-  Entity.randomSpawn(world, nportal)
-  Entity.randomSpawn(world, eportal)
+  for i=1,portals do
+    local hue = (i/portals+0.22)%1
+    local nportal = Portal(hue)
+    local eportal = Portal(hue, nportal)
+    Entity.randomSpawn(world, nportal)
+    Entity.randomSpawn(world, eportal)
+  end
 end
 
 function love.update(dt)
